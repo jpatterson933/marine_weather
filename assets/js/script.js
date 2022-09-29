@@ -6,6 +6,8 @@ import surfData from "./surfData.json" assert {type: "json"}
 
 // console.log(surfData.hours[0])
 
+
+
 const surf = surfData.hours;
 // console.log(surf)
 

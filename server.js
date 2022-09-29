@@ -24,6 +24,22 @@ function writeToFile(fileName, fileData) {
     })
 }
 
+const cityFile =`let latitude = ${latitude};
+let longitude = -${longitude};
+let savedCity = ${JSON.stringify(savedCity)};`
+
+function saveCityInfo (fileName, fileData) {
+    fs.writeFile(path.join(__dirname, "./assets/js", fileName), fileData, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("City information saved");
+        }
+    })
+}
+
+
+
 
 const fetchWaveForecastData = (latitude, longitude) => {
     // parameters for surf data request
@@ -51,6 +67,7 @@ const fetchWaveForecastData = (latitude, longitude) => {
             console.log(res)
 
             writeToFile("surfData.json", res);
+            saveCityInfo("cityInfo.js", cityFile)
         })
         .catch((error) => {
             console.log(error);
