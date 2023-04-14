@@ -3,7 +3,7 @@ const express = require("express");
 const db = require('./config/connection')
 
 // const mongoose = require("mongoose");
-// const routes = require('./routes')
+const routes = require('./routes')
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -34,7 +34,7 @@ app.use(express.json());
 // }
 
 // Add routes, both API and view
-// app.use(routes);
+app.use(routes);
 
 // Connect to the Mongo DB /need to make changes once we have a mongo database
 // mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/marine_db");
