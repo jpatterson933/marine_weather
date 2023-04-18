@@ -13,7 +13,11 @@ export const Login = () => {
             password: surfer.password
         })
             .then(response => {
-                console.log(response, "you are logged in?")
+                const token = response.data.token;
+                sessionStorage.setItem('seshToke', token);
+            })
+            .catch(error => {
+                console.error(error);
             })
     }
 

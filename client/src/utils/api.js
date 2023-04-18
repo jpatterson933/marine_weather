@@ -10,7 +10,6 @@ export default {
     return axios.get("/api/surfers/" + id);
   },
   login: function(user) {
-    console.log("testing", user)
     return axios.post("/api/login/", user);
   }
 };

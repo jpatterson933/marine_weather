@@ -1,5 +1,8 @@
 const db = require("../models");
 const Bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+require('dotenv').config();
 
 module.exports = {
     async loginSurfer(req, res) {
@@ -15,12 +18,11 @@ module.exports = {
                 return res.status(400).send({ messag: "The password is invalid" });
             }
 
-            // req.session.save(() => {
-            //     req.session.user_id = theSurfer._id;
-            //     req.session.logged_in = true;
-            //     res.json({ user: theSurfer, message: "You are now logged in!" });
-            // })
-            res.json({ user: dbSurferLogin, message: "You are now logged in!"})
+            let userToken = jwt.sign({
+                data: dbSurferLogin
+            }, process.env.JWT_TOKEN_KEY, {expiresIn: 60 * 60})
+
+            res.json({ user: dbSurferLogin, message: "You are now logged in!", token: userToken})
         } catch (error) {
             console.error(error);
             res.status(500).json(error);
