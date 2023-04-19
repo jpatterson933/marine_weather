@@ -39,11 +39,7 @@ export const Login = () => {
                     type="password"
                     onChange={(event) => handleInputChange(event)}
                 />
-                <input
-                    name="submit"
-                    type="submit"
-                    onClick={handleFormSubmit}
-                />
+                <button type="button" onClick={handleFormSubmit}>Submit</button>
             </form>
         </>
     )
