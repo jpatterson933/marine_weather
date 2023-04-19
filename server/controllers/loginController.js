@@ -17,7 +17,7 @@ module.exports = {
             if (!Bcrypt.compareSync(req.body.password, dbSurferLogin.userPassword)) {
                 return res.status(400).send({ messag: "The password is invalid" });
             }
-
+            // here is our jwt token
             let userToken = jwt.sign({
                 data: dbSurferLogin
             }, process.env.JWT_TOKEN_KEY, {expiresIn: 60 * 60})

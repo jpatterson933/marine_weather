@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-
 import API from "../../utils/api";
 
 export const Login = () => {
     const [surfer, setSurfer] = useState();
 
     const handleFormSubmit = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
 
         API.login({
             username: surfer.username,
@@ -46,8 +45,6 @@ export const Login = () => {
                     onClick={handleFormSubmit}
                 />
             </form>
-
-
         </>
     )
 }
