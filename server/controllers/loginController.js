@@ -21,6 +21,9 @@ module.exports = {
                 return res.status(400).send({ message: "The password is invalid" });
             }
 
+            await dbSurferLogin.updateOne({
+                userSesh: true
+            })
 
             req.session.user_id = dbSurferLogin._id;
             req.session.logged_in = true;
@@ -38,6 +41,7 @@ module.exports = {
         if (req.session.logged_in) {
             res.json({ logged_in: true, user_id: req.session.user_id })
         } else {
+            console.log(logout)
             res.json({ logged_in: false })
         }
     }

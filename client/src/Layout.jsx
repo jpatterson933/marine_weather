@@ -16,6 +16,10 @@ export const Login = () => {
         })
             .then(response => {
                 console.log(response)
+                setSurfer({
+                    user: response.data.user.userName
+                })
+
             })
             .catch(error => {
                 console.error(error);
@@ -27,9 +31,9 @@ export const Login = () => {
         existingSurfer[event.target.name] = event.target.value;
         setSurfer(existingSurfer)
     }
+    console.log(surfer)
 
     return (
-        <>
             <form>
                 <input
                     name="username"
@@ -43,7 +47,6 @@ export const Login = () => {
                 />
                 <button type="button" onClick={handleFormSubmit}>Submit</button>
             </form>
-        </>
     )
 }
 
@@ -51,7 +54,7 @@ export const Login = () => {
 
 const ShowLogin = () => {
     const [stateManagement, setStateManagement] = useState();
-    const [tokenExpiration, setTokenExpiration] = useState(null);
+    // const [tokenExpiration, setTokenExpiration] = useState(null);
     useEffect(() => {
         let existToke = sessionStorage.getItem("seshToke");
         if (existToke) {
