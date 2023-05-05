@@ -14,9 +14,6 @@ const surferSchema = new Schema({
         required: true,
         min_length: 8,
         max_length: 25,
-    },
-    userSesh: {
-        type: Boolean
     }
 });
 

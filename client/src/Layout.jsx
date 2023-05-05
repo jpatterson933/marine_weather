@@ -15,7 +15,10 @@ export const Login = () => {
             password: surfer.password
         })
             .then(response => {
-                console.log(response)
+                const utcString = response.headers.date;
+                const dateObj = new Date(utcString);
+                const unixTimestamp = Math.floor(dateObj.getTime() / 1000);
+                localStorage.setItem("loggedDate", unixTimestamp)
                 setSurfer({
                     user: response.data.user.userName
                 })
@@ -25,13 +28,12 @@ export const Login = () => {
                 console.error(error);
             })
     }
-
+    console.log(new Date())
     const handleInputChange = (event) => {
         const existingSurfer = { ...surfer }
         existingSurfer[event.target.name] = event.target.value;
         setSurfer(existingSurfer)
     }
-    console.log(surfer)
 
     return (
             <form>
@@ -54,13 +56,18 @@ export const Login = () => {
 
 const ShowLogin = () => {
     const [stateManagement, setStateManagement] = useState();
+
     // const [tokenExpiration, setTokenExpiration] = useState(null);
     useEffect(() => {
-        let existToke = sessionStorage.getItem("seshToke");
-        if (existToke) {
+    const loggedTime = localStorage.getItem("loggedDate")
+    const currentTimeStamp = Math.floor(Date.now() / 1000);
+    const timeDifference = currentTimeStamp - loggedTime;
+    console.log(timeDifference)
+        if (loggedTime && timeDifference < 300) {
             setStateManagement(true);
-        } else if (!existToke) {
-            setStateManagement(false)
+        } else if (!loggedTime || timeDifference > 300) {
+            localStorage.removeItem("loggedDate");
+            setStateManagement(false);
         }
     }, [])
 
