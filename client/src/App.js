@@ -12,8 +12,6 @@ function App() {
 
     <div className="App">
       <h1>Surfer App</h1>
-      
-      {/* <Login /> */}
     </div>
     </Layout>
   );

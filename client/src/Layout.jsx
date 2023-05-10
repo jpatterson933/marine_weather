@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Footer } from "./components/Footer";
 import API from "./utils/api";
+import { Search } from "./components/Search";
 
 
 
@@ -28,7 +29,7 @@ export const Login = () => {
                 console.error(error);
             })
     }
-    console.log(new Date())
+    // console.log(new Date())
     const handleInputChange = (event) => {
         const existingSurfer = { ...surfer }
         existingSurfer[event.target.name] = event.target.value;
@@ -36,19 +37,19 @@ export const Login = () => {
     }
 
     return (
-            <form>
-                <input
-                    name="username"
-                    type="text"
-                    onChange={(event) => handleInputChange(event)}
-                />
-                <input
-                    name="password"
-                    type="password"
-                    onChange={(event) => handleInputChange(event)}
-                />
-                <button type="button" onClick={handleFormSubmit}>Submit</button>
-            </form>
+        <form>
+            <input
+                name="username"
+                type="text"
+                onChange={(event) => handleInputChange(event)}
+            />
+            <input
+                name="password"
+                type="password"
+                onChange={(event) => handleInputChange(event)}
+            />
+            <button type="button" onClick={handleFormSubmit}>Submit</button>
+        </form>
     )
 }
 
@@ -59,10 +60,10 @@ const ShowLogin = () => {
 
     // const [tokenExpiration, setTokenExpiration] = useState(null);
     useEffect(() => {
-    const loggedTime = localStorage.getItem("loggedDate")
-    const currentTimeStamp = Math.floor(Date.now() / 1000);
-    const timeDifference = currentTimeStamp - loggedTime;
-    console.log(timeDifference)
+        const loggedTime = localStorage.getItem("loggedDate")
+        const currentTimeStamp = Math.floor(Date.now() / 1000);
+        const timeDifference = currentTimeStamp - loggedTime;
+        console.log(timeDifference)
         if (loggedTime && timeDifference < 300) {
             setStateManagement(true);
         } else if (!loggedTime || timeDifference > 300) {
@@ -79,7 +80,10 @@ const ShowLogin = () => {
                 <Login />
             </>
             :
-            <h1>Sesh in progress.</h1>
+            <>
+                <h1>Sesh in progress.</h1>
+                <Search />
+            </>
     );
 
 };
