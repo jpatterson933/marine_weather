@@ -6,10 +6,10 @@ const PORT = process.env.PORT || 3001;
 
 // error catching for db connection
 db.on("error", (error) => {
-    console.log(error, "error with stuff");
+    console.log(error, "Error with database connection");
 });
 
-
+// open the data base
 db.once("open", () => {
     app.on("session.destroy", (sessionId) => {
         console.log(`Session ${sessionId} has expired!`);
