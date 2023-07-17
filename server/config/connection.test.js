@@ -9,7 +9,6 @@ describe("Database Connection", () => {
         expect(readyState).toBe(2);
     });
     test("should be connected to the database", done => {
-        console.log(db)
         db.once('open', () => {
 
             const readyState = db.readyState;
