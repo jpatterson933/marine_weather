@@ -5,7 +5,7 @@ import surfData from "./surfData.json" assert {type: "json"}
 // console.log(surfData)
 
 // console.log(surfData.hours[0])
-
+console.log(surfData)
 
 
 const surf = surfData.hours;
@@ -126,6 +126,8 @@ const dataLoading = (status, element) => {
     } else if (status === false) {
         element.style.display = "none";
     }
+
+
 }
 
 // main function to run through data

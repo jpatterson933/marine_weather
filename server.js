@@ -4,6 +4,25 @@
 */
 
 require('dotenv').config();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
@@ -15,7 +34,12 @@ let savedCity = "Malibu";
 
 // function to write to a file with param fileName and fileData
 function writeToFile(fileName, fileData) {
+
+
+
+    // fs.writeFile(path, "where the file should go, file name" ./assets/js/surfData.json)
     fs.writeFile(path.join(__dirname, "./assets/js", fileName), JSON.stringify(fileData), (err) => {
+        console.log(__dirname)
         if (err) {
             console.log(err);
         } else {
@@ -29,6 +53,7 @@ let longitude = -${longitude};
 let savedCity = ${JSON.stringify(savedCity)};`
 
 function saveCityInfo (fileName, fileData) {
+
     fs.writeFile(path.join(__dirname, "./assets/js", fileName), fileData, (err) => {
         if (err) {
             console.log(err);
@@ -59,14 +84,14 @@ const fetchWaveForecastData = (latitude, longitude) => {
     axios
         .request(options)
         .then((response) => {
-            // console.log(response.data);
+            console.log(response, "response");
 
-            return response.data
+            return response.data;
         })
-        .then((res) => {
-            console.log(res)
+        .then((data) => {
+            console.log(data)
 
-            writeToFile("surfData.json", res);
+            writeToFile("surfData.json", data);
             saveCityInfo("cityInfo.js", cityFile)
         })
         .catch((error) => {
