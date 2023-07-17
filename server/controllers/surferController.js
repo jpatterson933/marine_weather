@@ -6,6 +6,7 @@ module.exports = {
             const dbSurferData = await Surfer.create(req.body);
             res.json(dbSurferData);
         } catch (error) {
+            console.error(error);
             res.status(500).json(error)
         }
     },

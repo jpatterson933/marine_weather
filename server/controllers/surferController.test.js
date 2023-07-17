@@ -1,8 +1,7 @@
 const { MongoClient } = require('mongodb');
-const Surfer = require('../models/Surfer');
 const { createSurfer, getSurfer } = require('../controllers/surferController');
 
-describe('insert', () => {
+describe('Testing surfercontroller methods', () => {
     let connection;
     let db;
 
@@ -22,7 +21,7 @@ describe('insert', () => {
     it("should create a surfer for the surfers collection", async () => {
         const mockRequest = {
             body: {
-                _id: '1234',
+                _id: '123',
                 userName: 'surferName',
                 userPassword: 'testing123'
             }
@@ -33,7 +32,15 @@ describe('insert', () => {
             status: jest.fn(() => mockResponse)
         };
 
-        await createSurfer(mockRequest, mockResponse)
+        await createSurfer(mockRequest, mockResponse);
+
+        expect(mockResponse.json).toHaveBeenCalled();
+
+        
+    });
+
+    it("should get a surfer by the surfer id", async () => {
+
     })
 });
 
