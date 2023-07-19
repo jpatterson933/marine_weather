@@ -7,7 +7,8 @@ afterAll(async () => await closeDatabase());
 
 const basicMockResponse = {
     json: jest.fn(),
-    status: jest.fn(() => basicMockResponse)
+    status: jest.fn(() => basicMockResponse),
+    send: jest.fn(() => basicMockResponse)
 };
 
 const mockRequestBody = {

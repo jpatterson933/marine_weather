@@ -7,10 +7,17 @@ beforeAll(async () => await connect());
 afterEach(async () => await clearDatabase());
 afterAll(async () => await closeDatabase());
 
-const compareSyncSpy = jest.spyOn(Bcrypt, 'compareSync')
+
+const basicMockResponse = {
+    json: jest.fn(),
+    status: jest.fn(() => basicMockResponse),
+    send: jest.fn(() => basicMockResponse)
+};
+
+const compareSyncSpy = jest.spyOn(Bcrypt, 'compareSync');
 
 describe("Testing the login controller routes", () => {
-
+    // set up fake user for testing
     const password = 'testing123';
     const hashedPassword = Bcrypt.hashSync(password, 10);
     const fakeSurfer = {
@@ -20,17 +27,13 @@ describe("Testing the login controller routes", () => {
 
     db.Surfer.findOne = jest.fn().mockImplementation((query) => {
         return query.userName === fakeSurfer.userName ? Promise.resolve(fakeSurfer) : Promise.resolve(null);
-    })
+    });
+
     it("login should fail with a 400 status", async () => {
         const mockRequestBody = {
             body: {
                 userName: 'surferName',
             }
-        };
-        const basicMockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => basicMockResponse),
-            send: jest.fn(() => basicMockResponse)
         };
         await loginSurfer(mockRequestBody, basicMockResponse);
 
@@ -49,15 +52,10 @@ describe("Testing the login controller routes", () => {
                 password: 'wrongPassword'
             }
         };
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse),
-            send: jest.fn(() => mockResponse)
-        };
 
-        await loginSurfer(mockRequest, mockResponse);
-        expect(mockResponse.status).toHaveBeenCalledWith(400);
-        expect(mockResponse.send).toHaveBeenCalledWith({ message: "The password is invalid" });
+        await loginSurfer(mockRequest, basicMockResponse);
+        expect(basicMockResponse.status).toHaveBeenCalledWith(400);
+        expect(basicMockResponse.send).toHaveBeenCalledWith({ message: "The password is invalid" });
 
     })
 
@@ -72,19 +70,12 @@ describe("Testing the login controller routes", () => {
             session: {} // pass empty session object
         };
 
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse),
-        };
-
-        await loginSurfer(mockRequest, mockResponse);
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-        expect(mockResponse.json).toHaveBeenCalledWith(expect.objectContaining({ 
+        await loginSurfer(mockRequest, basicMockResponse);
+        expect(basicMockResponse.status).toHaveBeenCalledWith(200);
+        expect(basicMockResponse.json).toHaveBeenCalledWith(expect.objectContaining({ 
             message: "You are now logged in!",
         }));
-
     });
-
 });
 
 describe("testing the checkSession", () => {
@@ -95,14 +86,8 @@ describe("testing the checkSession", () => {
             }
         };
 
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse),
-        };
-
-        await checkSession(mockRequest, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        await checkSession(mockRequest, basicMockResponse);
+        expect(basicMockResponse.status).toHaveBeenCalledWith(200);
     });
 
     it("should return status 401 if the user is not logged in", async () => {
@@ -112,13 +97,7 @@ describe("testing the checkSession", () => {
             }
         };
 
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse),
-        };
-
-        await checkSession(mockRequest, mockResponse);
-
-        expect(mockResponse.status).toHaveBeenCalledWith(401);
-    })
-})
+        await checkSession(mockRequest, basicMockResponse);
+        expect(basicMockResponse.status).toHaveBeenCalledWith(401);
+    });
+});
