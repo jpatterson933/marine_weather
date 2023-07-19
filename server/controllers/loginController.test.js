@@ -7,7 +7,6 @@ beforeAll(async () => await connect());
 afterEach(async () => await clearDatabase());
 afterAll(async () => await closeDatabase());
 
-
 const basicMockResponse = {
     json: jest.fn(),
     status: jest.fn(() => basicMockResponse),
@@ -44,7 +43,7 @@ describe("Testing the login controller routes", () => {
     });
 
     it("should return 400 if password is invalid", async () => {
-
+        // tell test password hashes do not match
         compareSyncSpy.mockReturnValue(false);
         const mockRequest = {
             body: {
@@ -60,6 +59,7 @@ describe("Testing the login controller routes", () => {
     })
 
     it("should return 200 and he user data if the login is successful", async () => {
+        // tell test that password hash values do match
         compareSyncSpy.mockReturnValue(true);
 
         const mockRequest = {
