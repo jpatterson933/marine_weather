@@ -20,7 +20,7 @@ describe("Testing the login controller routes", () => {
     const fakeSurfer = {
         userName: 'surferName',
         userPassword: hashedPassword
-        
+
     };
 
     db.Surfer.findOne = jest.fn().mockImplementation((query) => {
@@ -84,12 +84,15 @@ describe("Testing the login controller routes", () => {
         const mockResponse = {
             json: jest.fn(),
             status: jest.fn(() => mockResponse),
-            // send: jest.fn(() => mockResponse)
+            send: jest.fn(() => mockResponse)
         };
 
         await loginSurfer(mockRequest, mockResponse);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.json).toHaveBeenCalledWith(expect.objectContaining({ 
+            message: "You are now logged in!",
+        }));
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200)
     })
 
 })
