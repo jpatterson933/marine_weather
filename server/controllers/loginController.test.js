@@ -1,6 +1,6 @@
 const { loginSurfer, checkSession } = require('./loginController');
 const { connect, clearDatabase, closeDatabase } = require('../utils/db_test_setup');
-const Bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const db = require('../models');
 
 beforeAll(async () => await connect());
@@ -13,12 +13,12 @@ const basicMockResponse = {
     send: jest.fn(() => basicMockResponse)
 };
 
-const compareSyncSpy = jest.spyOn(Bcrypt, 'compareSync');
+const compareSyncSpy = jest.spyOn(bcrypt, 'compareSync');
 
 describe("Testing the login controller routes", () => {
     // set up fake user for testing
     const password = 'testing123';
-    const hashedPassword = Bcrypt.hashSync(password, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const fakeSurfer = {
         userName: 'surferName',
         userPassword: hashedPassword

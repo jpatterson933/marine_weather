@@ -1,5 +1,5 @@
 const db = require("../models");
-const Bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 // import necessary utilitiy modules
 const defaultTimer = require("../utils/timer");
 // const jwt = require("jsonwebtoken");
@@ -17,7 +17,7 @@ module.exports = {
             if (!dbSurferLogin) {
                 return res.status(400).send({ message: "The surfer does not exist!" });
             };
-            if (!Bcrypt.compareSync(req.body.password, dbSurferLogin.userPassword)) {
+            if (!bcrypt.compareSync(req.body.password, dbSurferLogin.userPassword)) {
                 return res.status(400).send({ message: "The password is invalid" });
             };
             // set up our session variables
