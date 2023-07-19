@@ -12,32 +12,30 @@ module.exports = {
         try {
             const dbSurferLogin = await db.Surfer.findOne({
                 userName: req.body.username,
-            })
+            });
 
             if (!dbSurferLogin) {
                 return res.status(400).send({ message: "The surfer does not exist!" });
-            }
+            };
             if (!Bcrypt.compareSync(req.body.password, dbSurferLogin.userPassword)) {
                 return res.status(400).send({ message: "The password is invalid" });
-            }
-
+            };
+            // set up our session variables
             req.session.user_id = dbSurferLogin._id;
             req.session.logged_in = true;
             req.session.token_expiration = new Date().getTime() + defaultTimer; // set the token expiration time in session storage
-            res.json({ user: dbSurferLogin, message: "You are now logged in!", session_id: req.sessionID });
-
-
+            res.status(200).json({ user: dbSurferLogin, message: "You are now logged in!", session_id: req.sessionID });
 
         } catch (error) {
             console.error(error);
             res.status(500).json(error);
-        }
+        };
     },
     async checkSession(req, res) { // a direct line to check if a session is still active - to utilize on frontend
         if (req.session.logged_in) {
-            res.json({ logged_in: true, user_id: req.session.user_id })
+            res.status(200).json({ logged_in: true, user_id: req.session.user_id });
         } else {
-            res.json({ logged_in: false })
-        }
+            res.status(401).json({ logged_in: false });
+        };
     }
-}
+};

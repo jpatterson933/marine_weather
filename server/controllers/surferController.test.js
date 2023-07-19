@@ -1,90 +1,36 @@
-// const { MongoClient } = require('mongodb');
-// const {MongoMemoryServer} = require('')
 const { createSurfer, getSurfer } = require('../controllers/surferController');
-
-// describe('Testing surfercontroller methods', () => {
-//     let connection;
-//     let db;
-
-//     beforeAll(async () => {
-//         connection = await MongoClient.connect(global.__MONGO_URI__, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         });
-//         db = await connection.db();
-//     });
-
-//     afterAll(async () => {
-//         await connection.close();
-//     });
-
-
-//     test("should create a surfer for the surfers collection", async () => {
-//         const mockRequest = {
-//             body: {
-//                 userName: 'surferName',
-//                 userPassword: 'testing123'
-//             }
-//         };
-
-//         const mockResponse = {
-//             json: jest.fn(),
-//             status: jest.fn(() => mockResponse)
-//         };
-
-//         await createSurfer(mockRequest, mockResponse);
-
-//         expect(mockResponse.json).toHaveBeenCalled();
-
-
-//     });
-
-// });
-
 const { connect, clearDatabase, closeDatabase } = require('../utils/db_test_setup');
+
 beforeAll(async () => await connect());
 afterEach(async () => await clearDatabase());
 afterAll(async () => await closeDatabase());
 
+const basicMockResponse = {
+    json: jest.fn(),
+    status: jest.fn(() => basicMockResponse)
+};
+
+const mockRequestBody = {
+    body: {
+        _id: '64b74f23e0ae231cf10c340c',
+        userName: 'surferName',
+        userPassword: 'testing123'
+    }
+};
+
 describe("create surfer test", () => {
     it("should create a surfer for the surfer collection", async () => {
-        const mockRequest = {
-            body: {
-                _id: '64b74f23e0ae231cf10c340c',
-                userName: 'surferName',
-                userPassword: 'testing123'
-            }
-        };
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse)
-        };
-        // console.log(mockResponse.json, "json stuff")
-        await createSurfer(mockRequest, mockResponse);
 
-        expect(mockResponse.json).toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        await createSurfer(mockRequestBody, basicMockResponse);
 
+        expect(basicMockResponse.json).toHaveBeenCalled();
+        expect(basicMockResponse.status).toHaveBeenCalledWith(200);
 
-
-
-    })
+    });
 
     it("should get a surfer by their id", async () => {
 
-        const mockRequestCreate = {
-            body: {
-                _id: '64b74f23e0ae231cf10c340c',
-                userName: 'surferName',
-                userPassword: 'testing123'
-            }
-        };
-        const mockResponseCreate = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponseCreate)
-        };
-        // console.log(mockResponse.json, "json stuff")
-        await createSurfer(mockRequestCreate, mockResponseCreate);
+        await createSurfer(mockRequestBody, basicMockResponse);
 
         const mockRequest = {
             params: {
@@ -92,17 +38,35 @@ describe("create surfer test", () => {
             }
         };
 
-        const mockResponse = {
-            json: jest.fn(),
-            status: jest.fn(() => mockResponse)
+        await getSurfer(mockRequest, basicMockResponse);
+
+        expect(basicMockResponse.json).toHaveBeenCalled();
+        expect(basicMockResponse.status).toHaveBeenCalledWith(200);
+        expect(basicMockResponse.json.mock.lastCall[0].userName).toBe('surferName');
+
+    });
+
+    it("should say there is no surfer with this id", async () => {
+        const mockRequest = {
+            params: {
+                surferId: '64b74f23e0ae231cf10c340c' // must be an objectId string
+            }
         };
 
-        await getSurfer(mockRequest, mockResponse);
+        await getSurfer(mockRequest, basicMockResponse);
 
-        expect(mockResponse.json).toHaveBeenCalled();
-        expect(mockResponse.status).toHaveBeenCalledWith(200);
-        // console.log(mockResponse.json.mock.lastCall[0], "json data?")
-        expect(mockResponse.json.mock.lastCall[0].userName).toBe('surferName')
+        expect(basicMockResponse.json).toHaveBeenCalled();
+        expect(basicMockResponse.status).toHaveBeenCalledWith(404);
+        expect(basicMockResponse.json).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message: "No surfer with this id exists!"
+            })
+        );
+    });
+
+    it("should throw an error", async () => {
+
+        
 
     })
-})
+});
