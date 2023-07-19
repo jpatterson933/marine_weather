@@ -3,6 +3,7 @@ const Surfer = require("../models/Surfer");
 module.exports = {
     async createSurfer(req, res) {
         try {
+            console.log("create surfer method")
             const dbSurferData = await Surfer.create(req.body);
             res.json(dbSurferData);
         } catch (error) {
