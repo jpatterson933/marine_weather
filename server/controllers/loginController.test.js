@@ -102,6 +102,23 @@ describe("testing the checkSession", () => {
 
         await checkSession(mockRequest, mockResponse);
 
-        expect(mockResponse.status).toHaveBeenCalledWith(200)
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+    });
+
+    it("should return status 401 if the user is not logged in", async () => {
+        const mockRequest = {
+            session: {
+                logged_in: false
+            }
+        };
+
+        const mockResponse = {
+            json: jest.fn(),
+            status: jest.fn(() => mockResponse),
+        };
+
+        await checkSession(mockRequest, mockResponse);
+
+        expect(mockResponse.status).toHaveBeenCalledWith(401);
     })
 })
