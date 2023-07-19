@@ -20,6 +20,7 @@ describe("Testing the login controller routes", () => {
     const fakeSurfer = {
         userName: 'surferName',
         userPassword: hashedPassword
+        
     };
 
     db.Surfer.findOne = jest.fn().mockImplementation((query) => {
