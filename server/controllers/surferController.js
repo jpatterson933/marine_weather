@@ -5,7 +5,7 @@ module.exports = {
         try {
             console.log("create surfer method")
             const dbSurferData = await Surfer.create(req.body);
-            res.json(dbSurferData);
+            res.status(200).json(dbSurferData);
         } catch (error) {
             console.error(error);
             res.status(500).json(error)
@@ -19,7 +19,7 @@ module.exports = {
                 return res.status(404).json({ message: "No player with this id exists!"});
             }
 
-            res.json(dbSurferData);
+            res.status(200).json(dbSurferData);
         } catch (error) {
             console.error(error);
             res.status(500).json(error);

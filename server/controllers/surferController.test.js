@@ -58,8 +58,17 @@ describe("create surfer test", () => {
             json: jest.fn(),
             status: jest.fn(() => mockResponse)
         };
+        // console.log(mockResponse.json, "json stuff")
         await createSurfer(mockRequest, mockResponse);
+
+        expect(mockResponse.json).toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        
 
 
     })
+
+    // it("should get a surfer by their id", async () => {
+
+    // })
 })
