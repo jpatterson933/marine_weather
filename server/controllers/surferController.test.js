@@ -50,6 +50,7 @@ describe("create surfer test", () => {
     it("should create a surfer for the surfer collection", async () => {
         const mockRequest = {
             body: {
+                _id: '64b74f23e0ae231cf10c340c',
                 userName: 'surferName',
                 userPassword: 'testing123'
             }
@@ -63,12 +64,45 @@ describe("create surfer test", () => {
 
         expect(mockResponse.json).toHaveBeenCalled();
         expect(mockResponse.status).toHaveBeenCalledWith(200);
-        
+
+
 
 
     })
 
-    // it("should get a surfer by their id", async () => {
+    it("should get a surfer by their id", async () => {
 
-    // })
+        const mockRequestCreate = {
+            body: {
+                _id: '64b74f23e0ae231cf10c340c',
+                userName: 'surferName',
+                userPassword: 'testing123'
+            }
+        };
+        const mockResponseCreate = {
+            json: jest.fn(),
+            status: jest.fn(() => mockResponseCreate)
+        };
+        // console.log(mockResponse.json, "json stuff")
+        await createSurfer(mockRequestCreate, mockResponseCreate);
+
+        const mockRequest = {
+            params: {
+                surferId: '64b74f23e0ae231cf10c340c'
+            }
+        };
+
+        const mockResponse = {
+            json: jest.fn(),
+            status: jest.fn(() => mockResponse)
+        };
+
+        await getSurfer(mockRequest, mockResponse);
+
+        expect(mockResponse.json).toHaveBeenCalled();
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // console.log(mockResponse.json.mock.lastCall[0], "json data?")
+        expect(mockResponse.json.mock.lastCall[0].userName).toBe('surferName')
+
+    })
 })
