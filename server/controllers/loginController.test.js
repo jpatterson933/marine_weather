@@ -8,10 +8,6 @@ afterEach(async () => await clearDatabase());
 afterAll(async () => await closeDatabase());
 
 const compareSyncSpy = jest.spyOn(Bcrypt, 'compareSync')
-// const basicSurfer = {
-//     userName: 'surfer123',
-//     userPassword: 'testing123'
-// }
 
 describe("Testing the login controller routes", () => {
 
@@ -20,7 +16,6 @@ describe("Testing the login controller routes", () => {
     const fakeSurfer = {
         userName: 'surferName',
         userPassword: hashedPassword
-
     };
 
     db.Surfer.findOne = jest.fn().mockImplementation((query) => {
@@ -37,17 +32,13 @@ describe("Testing the login controller routes", () => {
             status: jest.fn(() => basicMockResponse),
             send: jest.fn(() => basicMockResponse)
         };
-
-
         await loginSurfer(mockRequestBody, basicMockResponse);
 
         expect(basicMockResponse.status).toHaveBeenCalledWith(400)
         expect(basicMockResponse.send).toHaveBeenCalledWith({
             message: 'The surfer does not exist!'
-        })
-
-
-    })
+        });
+    });
 
     it("should return 400 if password is invalid", async () => {
 
@@ -84,7 +75,6 @@ describe("Testing the login controller routes", () => {
         const mockResponse = {
             json: jest.fn(),
             status: jest.fn(() => mockResponse),
-            send: jest.fn(() => mockResponse)
         };
 
         await loginSurfer(mockRequest, mockResponse);
@@ -93,6 +83,25 @@ describe("Testing the login controller routes", () => {
             message: "You are now logged in!",
         }));
 
-    })
+    });
 
+});
+
+describe("testing the checkSession", () => {
+    it("should return status 200 if user is logged in", async () => {
+        const mockRequest = {
+            session: {
+                logged_in: true
+            }
+        };
+
+        const mockResponse = {
+            json: jest.fn(),
+            status: jest.fn(() => mockResponse),
+        };
+
+        await checkSession(mockRequest, mockResponse);
+
+        expect(mockResponse.status).toHaveBeenCalledWith(200)
+    })
 })
