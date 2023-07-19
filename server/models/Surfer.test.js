@@ -78,6 +78,7 @@ describe("Surfer Model Test", () => {
             // console.log(error);
         }
         expect(error).toBeDefined();
+        
     })
 
 
