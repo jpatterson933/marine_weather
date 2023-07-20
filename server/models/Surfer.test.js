@@ -75,7 +75,7 @@ describe("Surfer Model Test", () => {
         } catch(err){
             error = err;
         };
-        
+
         expect(error).toBeDefined();
         expect(error.message).toContain("shorter than the minimum allowed length (6)");
     });
@@ -96,5 +96,43 @@ describe("Surfer Model Test", () => {
 
         expect(error).toBeDefined();
         expect(error.message).toContain("longer than the maximum allowed length (21)");
+    });
+
+
+
+    it("should fail if userPassword does not meet minimum length of 8", async() => {
+        const userData = {
+            userName: 'surfer123', 
+            userPassword: 'user'
+        };
+
+        const invalidUserNameLength = new Surfer(userData);
+        let error;
+        try{
+            const savedUser = await invalidUserNameLength.save()
+        } catch(err){
+            error = err;
+        };
+        
+        expect(error).toBeDefined();
+        expect(error.message).toContain("shorter than the minimum allowed length (8)");
+    });
+
+    it("should failed if userName is over the maximum length of 25", async () => {
+        const userData = {
+            userName: 'surfer123',
+            userPassword: 'surferUserPasswordIsTooLong'
+        };
+
+        const invalidUserNameLength = new Surfer(userData);
+        let error;
+        try {
+            const savedUser = await invalidUserNameLength.save();
+        } catch (err) {
+            error = err;
+        };
+
+        expect(error).toBeDefined();
+        expect(error.message).toContain("longer than the maximum allowed length (25)");
     });
 });
