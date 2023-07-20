@@ -36,12 +36,12 @@ describe("Surfer Model Test", () => {
 
         let error;
         try {
-            const savedUser = await invalidUser.save()
-        } catch(e){
-            error = e;
-        }
+            const savedUser = await invalidUser.save();
+        } catch(err){
+            error = err;
+        };
         expect(error).toBeDefined();
-        expect(error.message).toContain("userName")
+        expect(error.message).toContain("userName");
     });
 
     
@@ -54,12 +54,12 @@ describe("Surfer Model Test", () => {
 
         let error;
         try {
-            const savedUser = await invalidUser.save()
+            const savedUser = await invalidUser.save();
         } catch(err){
             error = err;
-        }
+        };
         expect(error).toBeDefined();
-        expect(error.message).toContain("userPassword")
+        expect(error.message).toContain("userPassword");
     });
 
     it("should fail if userName does not meet minimum length", async() => {
@@ -73,13 +73,28 @@ describe("Surfer Model Test", () => {
         try{
             const savedUser = await invalidUserNameLength.save()
         } catch(err){
-            console.log(err)
             error = err;
-            // console.log(error);
-        }
-        expect(error).toBeDefined();
+        };
         
-    })
+        expect(error).toBeDefined();
+        expect(error.message).toContain("shorter than the minimum allowed length (6)");
+    });
 
+    it("should failed if userName is over the maximum length of 21", async () => {
+        const userData = {
+            userName: 'surferTesting123456789',
+            userPassword: 'userPassword123'
+        };
 
-})
+        const invalidUserNameLength = new Surfer(userData);
+        let error;
+        try {
+            const savedUser = await invalidUserNameLength.save();
+        } catch (err) {
+            error = err;
+        };
+
+        expect(error).toBeDefined();
+        expect(error.message).toContain("longer than the maximum allowed length (21)");
+    });
+});
