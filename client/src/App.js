@@ -9,10 +9,9 @@ function App() {
 
   return (
     <Layout>
-
-    <div className="App">
-      <h1>Surfer App</h1>
-    </div>
+      <div className="App">
+        <h1>Surfer App</h1>
+      </div>
     </Layout>
   );
 }
